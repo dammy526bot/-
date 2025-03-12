@@ -1,61 +1,76 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>網站安全檢查</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h1>網站安全檢查工具</h1>
-    <form id="check-form">
-      <label for="url">輸入網站 URL：</label>
-      <input type="text" id="url" name="url" placeholder="例如：https://example.com" required>
-      <button type="submit">檢查</button>
-    </form>
-
-    <div id="result">
-      <h2>檢查結果：</h2>
-      <p id="message"></p>
-      <p id="extra-message"></p>
-      <p id="time"></p>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById('check-form').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      
-      const url = document.getElementById('url').value;
-      const resultDiv = document.getElementById('result');
-      const message = document.getElementById('message');
-      const extraMessage = document.getElementById('extra-message');
-      const timeMessage = document.getElementById('time');
-      
-      // 顯示檢查中
-      message.textContent = '檢查中...';
-      extraMessage.textContent = '';
-      timeMessage.textContent = '';
-
-      try {
-        const response = await fetch(`/check?url=${encodeURIComponent(url)}`);
-        const data = await response.json();
-        
-        
-
-        extraMessage.textContent = data.message;  // 顯示 "這是由抹茶做出來的"
-        timeMessage.textContent = `做出來的時間：${data.time}`;  // 顯示當前時間
-      } catch (error) {
-        if (data.result.safe) {
-          message.textContent = `網站是安全的：${data.result.message}`;
-        } else {
-          message.textContent = `網站不安全：${data.result.message}`;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網站安全檢查</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
-      }
-    });
-  </script>
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .container button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>網站安全檢查</h2>
+        <input type="text" id="urlInput" placeholder="輸入網站網址">
+        <button id="checkButton">檢查網站</button>
+        <div id="result"></div>
+    </div>
+
+    <script src="security-check.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
