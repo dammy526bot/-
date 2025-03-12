@@ -42,16 +42,17 @@
         const response = await fetch(`/check?url=${encodeURIComponent(url)}`);
         const data = await response.json();
         
+        
+
+        extraMessage.textContent = data.message;  // 顯示 "這是由抹茶做出來的"
+        timeMessage.textContent = `做出來的時間：${data.time}`;  // 顯示當前時間
+      } catch (error) {
         if (data.result.safe) {
           message.textContent = `網站是安全的：${data.result.message}`;
         } else {
           message.textContent = `網站不安全：${data.result.message}`;
         }
 
-        extraMessage.textContent = data.message;  // 顯示 "這是由抹茶做出來的"
-        timeMessage.textContent = `做出來的時間：${data.time}`;  // 顯示當前時間
-      } catch (error) {
-        message.textContent = '發生錯誤，請稍後再試。';
       }
     });
   </script>
