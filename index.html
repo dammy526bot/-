@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>網站安全檢查</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>網站安全檢查工具</h1>
+    <form id="check-form">
+      <label for="url">輸入網站 URL：</label>
+      <input type="text" id="url" name="url" placeholder="例如：https://example.com" required>
+      <button type="submit">檢查</button>
+    </form>
+
+    <div id="result">
+      <h2>檢查結果：</h2>
+      <p id="message"></p>
+      <p id="extra-message"></p>
+      <p id="time"></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('check-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const url = document.getElementById('url').value;
+      const resultDiv = document.getElementById('result');
+      const message = document.getElementById('message');
+      const extraMessage = document.getElementById('extra-message');
+      const timeMessage = document.getElementById('time');
+      
+      // 顯示檢查中
+      message.textContent = '檢查中...';
+      extraMessage.textContent = '';
+      timeMessage.textContent = '';
+
+      try {
+        const response = await fetch(`/check?url=${encodeURIComponent(url)}`);
+        const data = await response.json();
+        
+        if (data.result.safe) {
+          message.textContent = `網站是安全的：${data.result.message}`;
+        } else {
+          message.textContent = `網站不安全：${data.result.message}`;
+        }
+
+        extraMessage.textContent = data.message;  // 顯示 "這是由抹茶做出來的"
+        timeMessage.textContent = `做出來的時間：${data.time}`;  // 顯示當前時間
+      } catch (error) {
+        message.textContent = '發生錯誤，請稍後再試。';
+      }
+    });
+  </script>
+</body>
+</html>
+
